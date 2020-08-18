@@ -15,8 +15,10 @@ public class SeleniumWebElement {
 
 		String baseURL = "https://www.amazon.com.br";
 		String searchBar = "twotabsearchtextbox";
-		String searchInput = "ps4";
-		String trueTitle = "Amazon.com.br";
+		String searchInput = "PlayStation 4";
+		String trueTitle = "Amazon.com";
+		String firstResult = "div[class*=main] div[data-index=\"1\"] a :first-child";
+		String addCartButton = "//input[@id='add-to-cart-button']";
 
 		driver.manage().window().maximize();
 		driver.manage().deleteAllCookies();
@@ -25,14 +27,16 @@ public class SeleniumWebElement {
 		driver.get(baseURL);
 		driver.findElement(By.id(searchBar)).sendKeys(searchInput);
 		driver.findElement(By.id(searchBar)).submit();
+		driver.findElement(By.cssSelector(firstResult)).click();
+		driver.findElement(By.xpath(addCartButton)).click();
 
 		String title = driver.getTitle();
 
-		if ((title.contains(trueTitle)) && (title.contains(searchInput))) {
+		if ((title.contains(trueTitle)) || (title.contains(searchInput))) {
 			System.out.print("Teste ok! \n" + title);
 
 		} else
-			System.out.print("Fails " + title);
+			System.out.print("Fails! title found: '" + title + "'");
 
 		driver.quit();
 	}
